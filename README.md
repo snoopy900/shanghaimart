@@ -1,24 +1,60 @@
-# README
+# テーブル設計
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+## users テーブル
 
-Things you may want to cover:
+| Column             | Type   | Options     |
+| ------------------ | ------ | ----------- |
+| nickname           | string | null: false |
+| email              | string | null:false, unique: true |
+| encrypted_password | string | null: false |
+| birthday           | date   | null: false |
 
-* Ruby version
+- has_many :foods
+- has_many :orders
 
-* System dependencies
+## foods テーブル
 
-* Configuration
+| Column | Type   | Options     |
+| ------ | ------ | ----------- |
+| name   | string | null: false |
+| content| string | null: false |
+| price  | string | null: false |
 
-* Database creation
 
-* Database initialization
+- belongs_to :user
+- has_one    :order
 
-* How to run the test suite
+## food_users テーブル
 
-* Services (job queues, cache servers, search engines, etc.)
+| Column | Type       | Options                        |
+| ------ | ---------- | ------------------------------ |
+| user   | references | null: false, foreign_key: true |
+| food   | references | null: false, foreign_key: true |
 
-* Deployment instructions
+- belongs_to :user
+- belongs_to :food
 
-* ...
+## orders テーブル
+
+| Column  | Type       | Options                        |
+| ------- | ---------- | ------------------------------ |
+| user    | references | null: false, foreign_key: true |
+| food    | references | null: false, foreign_key: true |
+
+- belongs_to :user
+- belongs_to :food
+- has_one    :address
+
+## addresses テーブル
+
+| Column        | Type       | Options     |
+| ------------  | ---------- | ------------|
+| post          | string     | null: false |
+| prefecture_id | integer    | null: false |
+| city          | string     | null: false |
+| address       | string     | null: false |
+| building      | string     | null: false |
+| phone_number  | string     | null: false |
+| order         | references | null: false, foreign_key: true |
+
+- belongs_to : order 
